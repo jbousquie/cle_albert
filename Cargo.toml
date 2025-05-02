@@ -3,4 +3,13 @@ name = "cle_albert"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "get_api_key"
+path = "src/bin/get_api_key.rs"
+
 [dependencies]
+reqwest = { version = "0.12.15", features = ["blocking", "json"] }
+base64 = "0.22.1"
