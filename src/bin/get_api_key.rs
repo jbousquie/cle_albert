@@ -1,7 +1,7 @@
-use cle_albert::{decrypt_api_key, encrypt_api_key, read_encrypted_api_key, renew_api_key};
+use cle_albert::{decrypt_api_key, encrypt_api_key, read_encrypted_api_key, renew_api_key, write_encrypted_api_key};
 use std::env;
 
-pub const API_URL: &str = "https://albert.api.etalab.gouv.fr/v1/tokens";
+pub const API_URL: &str = "https://albert.api.etalab.gouv.fr/tokens";
 const KEY_FILENAME: &str = "albertine.key";
 
 fn main() -> Result<(), ()> {
@@ -39,5 +39,21 @@ fn main() -> Result<(), ()> {
     if decrypted_key.ends_with('\r') {
         decrypted_key.pop();
     }
-    renew_api_key(API_URL, &decrypted_key)
+    match renew_api_key(API_URL, &decrypted_key) {
+        Ok(api_key) => {
+            let encrypted_key = encrypt_api_key(&api_key);
+            match write_encrypted_api_key(key_file, &encrypted_key) {
+                Ok(_) => Ok(()),
+                Err(e) => {
+                    println!("Erreur d'écriture du fichier : {}", e);
+                    Err(())
+                }
+            }
+        },
+        Err(e) => {
+            println!("Erreur : {:?}", e);
+            return Err(());
+        }
+    }
+
 }
