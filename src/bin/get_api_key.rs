@@ -2,7 +2,7 @@ use cle_albert::{decrypt_api_key, encrypt_api_key, read_encrypted_api_key, renew
 use std::env;
 
 pub const API_URL: &str = "https://albert.api.etalab.gouv.fr/tokens";
-const KEY_FILENAME: &str = "albertine.key";
+const KEY_FILENAME: &str = "/home/jerome/public_html/soft/albertine/key/albertine.key";
 
 fn main() -> Result<(), ()> {
     // Parse command line arguments
